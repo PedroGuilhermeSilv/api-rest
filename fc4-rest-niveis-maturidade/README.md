@@ -2,34 +2,35 @@
 
 ## Exemplo REST meia boca para E-commerce
 
-| Operação                                      | Método HTTP | Path                                           |
-|-----------------------------------------------|-------------|------------------------------------------------|
-| JWT login                                     | POST        | /jwt/login                                     |
-| Session login                                 | POST        | /session/login                                 |
-| Session logout                                | POST        | /session/logout                                |
-| Create a customer                             | POST        | /customers/createCustomer                      |
-| Get a customer by ID                          | GET         | /admin/customers/getCustomerById               |
-| List customers with pagination                | GET         | /admin/customers/listCustomers                 |
-| Update a customer                             | POST        | /admin/customers/updateCustomer                |
-| Delete a customer                             | POST        | /admin/customers/deleteCustomer                |
-| Create a category                             | POST        | /admin/categories/createCategory               |
-| Get a category by slug                        | GET         | /categories/getCategoryBySlug                  |
-| List categories with pagination               | GET         | /categories/listCategories                     |
-| List categories in admin with pagination      | GET         | /admin/categories/listCategories               |
-| Update a category                             | POST        | /admin/categories/updateCategory               |
-| Delete a category                             | POST        | /admin/categories/deleteCategory               |
-| Create a product                              | POST        | /admin/products/createProduct                  |
-| Get a product by ID                           | GET         | /admin/products/getProductById                 |
-| Get a product by slug                         | GET         | /products/getProductBySlug                     |
-| Update a product                              | POST        | /admin/products/updateProduct                  |
-| Delete a product                              | POST        | /admin/products/deleteProduct                  |
-| List products with pagination                 | GET         | /products/listProducts                         |
-| List products in admin with pagination        | GET         | /admin/products/listProducts                   |
-| Get CSV of products                           | GET         | /admin/products/listProducts.csv               |
-| Add an item to the cart                       | POST        | /carts/addItemToCart                           |
-| Get a cart by ID                              | GET         | /carts/getCart                                 |
-| Remove an item from the cart                  | POST        | /carts/removeItemFromCart                      |
-| Clear the cart                                | POST        | /carts/clearCart                               |
-| Create an order                               | POST        | /orders/createOrder                            |
-| List orders with pagination                   | GET         | /orders/listOrders                             |
 
+
+| Operação                                      | Método HTTP | Caminho                                          |
+|-----------------------------------------------|-------------|--------------------------------------------------|
+| JWT login                                     | POST        | /jwt/login                                       |
+| Session login                                 | POST        | /session/login                                   |
+| Session logout                                | POST        | /session/logout                                  |
+| Criar cliente                                 | POST        | /customers                                       |
+| Obter cliente por ID                          | GET         | /admin/customers/{{ customer_id }}               |
+| Listar clientes com paginação e filtro        | GET         | /admin/customers?page=1&limit=10                 |
+| Atualizar cliente                             | POST        | /admin/customers/{{ customer_id }}               |
+| Deletar cliente                               | POST        | /admin/customers/{{ customer_id }}/delete        |
+| Criar categoria                               | POST        | /admin/categories                                |
+| Obter categoria por ID                        | GET         | /categories/{{ category_slug }}                  |
+| Listar categorias com paginação e filtro      | GET         | /categories?page=1&limit=10&name=Category        |
+| Listar categorias no admin com paginação      | GET         | /admin/categories?page=1&limit=10&name=Category  |
+| Atualizar categoria                           | POST        | /admin/categories/{{ category_id }}              |
+| Deletar categoria                             | POST        | /admin/categories/{{ category_id }}/delete       |
+| Criar produto                                 | POST        | /admin/products                                  |
+| Obter produto por ID                          | GET         | /admin/products/{{ product_id }}                 |
+| Obter produto por slug                        | GET         | /products?slug={{ product_slug }}                |
+| Atualizar produto                             | POST        | /admin/products/{{ product_id }}                 |
+| Deletar produto                               | POST        | /admin/products/{{ product_id }}/delete          |
+| Listar produtos com paginação e filtro        | GET         | /products?page=1&limit=10                        |
+| Listar produtos no admin com paginação        | GET         | /admin/products?page=1&limit=10&name=Product     |
+| Obter CSV de produtos                         | GET         | /admin/products.csv                              |
+| Adicionar item ao carrinho                    | POST        | /cart/items                                      |
+| Obter carrinho por ID                         | GET         | /cart/{{ cart_id }}                              |
+| Remover item do carrinho                      | POST        | /cart/items/1/remove                             |
+| Limpar carrinho                               | POST        | /cart/clear                                      |
+| Criar pedido                                  | POST        | /orders                                          |
+| Listar pedidos com paginação e filtro         | GET         | /orders?page=1&limit=10                          |

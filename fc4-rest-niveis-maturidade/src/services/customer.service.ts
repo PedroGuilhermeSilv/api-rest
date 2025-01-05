@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
+import { createDatabaseConnection } from "../database";
 import { Customer } from "../entities/Customer";
 import { User } from "../entities/User";
-import { createDatabaseConnection } from "../database";
 
 export class CustomerService {
   constructor(private customerRepository: Repository<Customer>,private userRepository: Repository<User>) {}
@@ -41,14 +41,14 @@ export class CustomerService {
   }
 
   async updateCustomer(data: {
-    email: string;
+    customerId: number;
     phone?: string;
     address?: string;
     password?: string;
   }): Promise<Customer | null> {
-    const { email, phone, address, password } = data;
+    const {  customerId,phone, address, password } = data;
     const customer = await this.customerRepository.findOne({
-      where: { user: { email } },
+      where: { id:  customerId  },
       relations: ["user"],
     });
     if (!customer) {
