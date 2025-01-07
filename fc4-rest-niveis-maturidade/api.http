@@ -54,7 +54,7 @@ GET http://localhost:3000/admin/customers?page=1&limit=10
 Authorization: Bearer {{ token }}
 
 ### Update a customer
-POST http://localhost:3000/admin/customers/{{ customer_id }}
+PATCH  http://localhost:3000/admin/customers/{{ customer_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
@@ -65,7 +65,7 @@ Authorization: Bearer {{ token }}
 }
 
 ### Delete a customer
-POST http://localhost:3000/admin/customers/{{ customer_id }}/delete
+DELETE http://localhost:3000/admin/customers/{{ customer_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
@@ -100,7 +100,7 @@ GET http://localhost:3000/admin/categories?page=1&limit=10&name=Category
 Authorization: Bearer {{ token }}
 
 ### Update a category
-POST http://localhost:3000/admin/categories/{{ category_id }}
+PATCH http://localhost:3000/admin/categories/{{ category_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
@@ -110,7 +110,7 @@ Authorization: Bearer {{ token }}
 }
 
 ### Delete a category
-POST http://localhost:3000/admin/categories/{{ category_id }}/delete
+DELETE http://localhost:3000/admin/categories/{{ category_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
@@ -146,7 +146,7 @@ Authorization: Bearer {{ token }}
 GET http://localhost:3000/products?slug={{ product_slug }}
 
 ### Update a product
-POST http://localhost:3000/admin/products/{{ product_id }}
+PATCH http://localhost:3000/admin/products/{{ product_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
@@ -159,7 +159,7 @@ Authorization: Bearer {{ token }}
 }
 
 ### Delete a product
-POST http://localhost:3000/admin/products/{{ product_id }}/delete
+DELETE  http://localhost:3000/admin/products/{{ product_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
@@ -193,12 +193,12 @@ Content-Type: application/json
 
 ### Get a cart by ID
 GET http://localhost:3000/cart/
-Cookie: connect.sid=s%3Ai5fowlsbF5FyD4jksWeBEi3X_j0Oy_oi.3d0cgeMTH4W44HfVhTrW0d9S19SD6OL8iOGmubv6lAc; Path=/; HttpOnly
+Cookie: connect.sid=s%3ALMr2g3wgSs2uTh4exOkEXjgJzdB48ycP.xn3rjcY4Onsz%2BtUG%2BYJZJIX4e0YIfXIGYGiJ02Skvso;
 
 ### Remove an item from the cart
-POST http://localhost:3000/cart/items/1/remove
+DELETE  http://localhost:3000/cart/items/1
 Content-Type: application/json
-Cookie: connect.sid=s%3Ai5fowlsbF5FyD4jksWeBEi3X_j0Oy_oi.3d0cgeMTH4W44HfVhTrW0d9S19SD6OL8iOGmubv6lAc; Path=/; HttpOnly
+Cookie: connect.sid=s%3ALMr2g3wgSs2uTh4exOkEXjgJzdB48ycP.xn3rjcY4Onsz%2BtUG%2BYJZJIX4e0YIfXIGYGiJ02Skvso;
 
 {
   "cartItemId": 1
@@ -214,7 +214,7 @@ Cookie: connect.sid=s%3AChsdLB6EoAAXSn-bMQktOpIe_Oub7_kZ.l2CdzslYunIw4Teso4zp4jO
 POST http://localhost:3000/orders
 Content-Type: application/json
 Authorization: Bearer {{ token }}
-Cookie: connect.sid=s%3Ai5fowlsbF5FyD4jksWeBEi3X_j0Oy_oi.3d0cgeMTH4W44HfVhTrW0d9S19SD6OL8iOGmubv6lAc; Path=/; HttpOnly
+Cookie: connect.sid=s%3ALMr2g3wgSs2uTh4exOkEXjgJzdB48ycP.xn3rjcY4Onsz%2BtUG%2BYJZJIX4e0YIfXIGYGiJ02Skvso;
 
 {
   "payment_method": "CREDIT_CARD"

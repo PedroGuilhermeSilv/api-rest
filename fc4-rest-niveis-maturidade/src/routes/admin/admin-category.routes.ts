@@ -17,14 +17,14 @@ router.get('/:categoryId', async (req, res) => {
     res.json(category);
 });
 
-router.post('/:categoryId', async (req, res) => {
+router.patch('/:categoryId', async (req, res) => {
     const categoryService = await createCategoryService();
     const {  name, slug } = req.body;
     const category = await categoryService.updateCategory({ id: parseInt(req.params.categoryId), name, slug });
     res.json(category);
 });
 
-router.post('/:categoryId/delete', async (req, res) => {
+router.delete('/:categoryId', async (req, res) => {
     const categoryService = await createCategoryService();
     const { categoryId } = req.params;
     await categoryService.deleteCategory(parseInt(categoryId));
