@@ -8,7 +8,7 @@ Para considerar uma API Rest ele deve atingir os seguintes niveis.
 
 - `Level 0`: Uso apenas do http e json.
 - `Level 1`: Uso dos recursos e padronização como de rotas `/products`
-- `Level 2`: Integração das prodonização com os verbos http.
+- `Level 2`: Integração das prodonização com os verbos http. Queremos alterar a ação que iremos fazer em um recurso através do verbo.
 - `Level 3`: As respostas das nossas APIs precisam melhorar a sua navegação.
 
 ### Os **princípios do RESTful** são baseados na arquitetura REST (Representational State Transfer) definida por Roy Fielding. Eles fornecem diretrizes para criar sistemas escaláveis, simples e eficientes. Abaixo estão os principais princípios:
@@ -73,3 +73,16 @@ Esse é um dos princípios mais importantes do REST e tem quatro restrições pr
 
 ---
 
+
+## Lista de verbos
+| **Verbo**   | **Objetivo**                        | **Idempotente** | **Safe** |
+|-------------|-------------------------------------|----------------|---------|
+| `GET`       | Recuperar recursos                  | Sim            | Sim     |
+| `POST`      | Criar um recurso                    | Não            | Não     |
+| `PUT`       | Substituir recurso completamente    | Sim            | Não     |
+| `PATCH`     | Atualizar parcialmente um recurso   | Sim            | Não     |
+| `DELETE`    | Remover um recurso                  | Sim            | Não     |
+| `HEAD`      | Obter cabeçalhos                    | Sim            | Sim     |
+| `OPTIONS`   | Verificar métodos permitidos        | Sim            | Sim     |
+| `TRACE`     | Depurar requisição                  | Sim            | Não     |
+| `CONNECT`   | Estabelecer túnel                   | Não            | Não     |
