@@ -24,10 +24,61 @@ Para considerar uma API Rest ele deve atingir os seguintes niveis.
 ---
 
 ### **2. Stateless (Sem Estado)**
-- **Definição**: Cada requisição do cliente ao servidor deve conter todas as informações necessárias para ser processada.
-  - O servidor não armazena informações de contexto entre requisições.
-- **Exemplo**: Se o cliente faz uma requisição `GET /usuarios`, ele deve incluir tokens de autenticação (se necessário) para validação.
-- **Benefício**: Simplifica o gerenciamento de sessões e facilita a escalabilidade.
+- **Definição**: Cada requisição do cliente deve conter toda informação necessária para ser processada.
+  - O servidor não mantém informação sobre sessões entre requisições
+  - Cada requisição é independente e completa
+
+#### Características:
+- Nenhum estado do cliente é armazenado no servidor
+- Cada requisição deve ter todo contexto necessário
+- Tokens de autenticação devem ser enviados em cada requisição
+- Melhora a confiabilidade e escalabilidade
+
+### Exemplo de API Stateful vs Stateless
+
+#### API Stateful (Não Recomendado em REST):
+```javascript
+// Servidor mantém estado da sessão
+let sessions = {};
+
+app.post('/login', (req, res) => {
+    const { username } = req.body;
+    // Cria sessão e armazena no servidor
+    sessions[sessionId] = { username, lastAccess: new Date() };
+    res.cookie('sessionId', sessionId);
+});
+
+app.get('/user-data', (req, res) => {
+    const sessionId = req.cookies.sessionId;
+    // Depende do estado armazenado
+    const userData = sessions[sessionId];
+    res.json(userData);
+});
+```
+
+#### API Stateless (Recomendado em REST):
+```javascript
+app.post('/login', (req, res) => {
+    const { username } = req.body;
+    // Gera token com informações necessárias
+    const token = jwt.sign({ username }, 'secret-key');
+    res.json({ token });
+});
+
+app.get('/user-data', (req, res) => {
+    // Cada requisição contém todas as informações necessárias
+    const token = req.headers.authorization;
+    const userData = jwt.verify(token, 'secret-key');
+    res.json(userData);
+});
+```
+
+#### Por que Stateless é melhor?
+- Servidor não precisa manter estado
+- Escalabilidade horizontal simplificada
+- Qualquer servidor pode processar qualquer requisição
+- Maior confiabilidade
+
 
 ---
 
