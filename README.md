@@ -137,3 +137,6 @@ Esse é um dos princípios mais importantes do REST e tem quatro restrições pr
 | `OPTIONS`   | Verificar métodos permitidos        | Sim            | Sim     |
 | `TRACE`     | Depurar requisição                  | Sim            | Não     |
 | `CONNECT`   | Estabelecer túnel                   | Não            | Não     |
+
+## Listagem dos status http
+https://www.httpstatus.com.br/ 

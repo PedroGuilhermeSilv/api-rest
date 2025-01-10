@@ -6,7 +6,7 @@ const router = Router();
 router.get("/:productSlug", async (req, res) => {
   const productService = await createProductService();
   const product = await productService.getProductBySlug(
-    req.params.productSlug
+    req.params.productSlug as string
   );
   res.json(product);
 });

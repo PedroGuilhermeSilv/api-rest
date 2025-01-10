@@ -19,7 +19,7 @@ export class CartService {
     });
   }
 
-  async creatCart(customerId?: number) {
+  async createCart(customerId?: number) {
     let customer = null;
     if (customerId) {
       customer = await this.customerRepository.findOne({
@@ -29,6 +29,7 @@ export class CartService {
         throw new Error("Customer not found");
       }
     }
+
 
     const cart = new Cart();
     cart.customer = customer;
@@ -40,7 +41,7 @@ export class CartService {
   async addItemToCart(data: {
     productId: number;
     quantity: number;
-    uuid?: string;
+    uuid: string;
     customerId?: number;
   }): Promise<Cart> {
     const { productId, quantity, uuid, customerId } = data;
@@ -57,7 +58,7 @@ export class CartService {
     let cart = Object.keys(where).length
       ? await this.cartRepository.findOne({
         where,
-        relations: [ "items.product"],
+        relations: ["items.product"],
       })
       : null;
 
@@ -109,7 +110,7 @@ export class CartService {
   async clearCart(uuid: string): Promise<Cart | null> {
     const cart = await this.cartRepository.findOne({
       where: { uuid },
-      relations: [ "items.product"],
+      relations: ["items.product"],
     });
     if (!cart) {
       return null;

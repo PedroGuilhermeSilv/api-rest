@@ -7,10 +7,9 @@ router.post("/", async (req, res) => {
   const cartService = await createCartService();
   //@ts-expect-error
   const customerId = req.userId;
-  const cart = await cartService.creatCart(customerId);
+  const cart = await cartService.createCart(customerId);
   res.json(cart);
-}
-);
+});
 
 router.post("/:cartUuid/items", async (req, res) => {
   const cartService = await createCartService();
@@ -35,13 +34,14 @@ router.post("/:cartUuid/items", async (req, res) => {
       },
     })),
     createdAt: cart.createdAt,
-    customer: cart.customer
+    customer: cart.customer,
   });
 });
 
 router.get("/:cartUuid", async (req, res) => {
   const cartService = await createCartService();
   const cart = await cartService.getCart(req.params.cartUuid);
+  console.log(cart);
   res.json(cart);
 });
 
