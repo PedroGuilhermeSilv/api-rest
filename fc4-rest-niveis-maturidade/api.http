@@ -28,7 +28,19 @@ POST http://localhost:3000/session/logout
 
 
 ### 👉👉👉 Customer Endpoints 👈👈👈
+### Create a customer with form data
+POST http://localhost:3000/customers
+Content-Type: application/xml
 
+<xml></xml>
+
+### Create a customer with form data
+POST http://localhost:3000/customers
+Content-Type: application/x-www-form-urlencoded
+
+name=jhon_doe&email=jhon@hotmail.com&password=123456&phone=1234567890&address=123 Main St
+
+###
 # @name createCustomer
 POST http://localhost:3000/customers
 Content-Type: application/json
@@ -166,13 +178,25 @@ Authorization: Bearer {{ token }}
 
 ### List products with pagination and optional filtering&name=Product&categories_slug=category-slug&user_id=1
 GET http://localhost:3000/products?page=1&limit=10
+Accept: application/json
+
+
+### List products in admin with pagination and optional filtering &name=Product&categories_slug=category-slug&user_id=1
+GET http://localhost:3000/admin/products?page=1&limit=10
+Authorization: Bearer {{ token }}
+Accept: application/json
+
+### List products in admin with pagination and optional filtering &name=Product&categories_slug=category-slug&user_id=1
+GET http://localhost:3000/admin/products?page=1&limit=10
+Authorization: Bearer {{ token }}
+Accept: text/csv
 
 ### List products in admin with pagination and optional filtering &name=Product&categories_slug=category-slug&user_id=1
 GET http://localhost:3000/admin/products?page=1&limit=10
 Authorization: Bearer {{ token }}
 
 ### Get csv of products
-GET http://localhost:3000/admin/products.csv
+GET http://localhost:3000/admin/products/products.csv
 Authorization: Bearer {{ token }}
 
 ### 👉👉👉 Cart Endpoints 👈👈👈

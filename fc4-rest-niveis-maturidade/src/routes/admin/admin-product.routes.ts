@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { createProductService } from "../../services/product.service";
 import { Resource, ResourceCollection } from "../../http/resource";
+import { createProductService } from "../../services/product.service";
 
 const router = Router();
+
+
 
 router.post("/", async (req, res, next) => {
   const productService = await createProductService();
@@ -77,41 +79,33 @@ router.get("/", async (req, res, next) => {
       categories_slug,
     },
   });
-  const collection = new ResourceCollection(products, {
-    paginationData: {
-      total,
-      page: parseInt(page as string),
-      limit: parseInt(limit as string),
-    },
+  if (!req.headers["accept"] || req.headers["accept"] === "application/json") {
+    const collection = new ResourceCollection(products, {
+      paginationData: {
+        total,
+        page: parseInt(page as string),
+        limit: parseInt(limit as string),
+      },
+    });
+    next(collection);
+  }
+  if (req.headers["accept"] === "text/csv") {
+    const csv = products
+      .map((product) => {
+        return `${product.name},${product.slug},${product.description},${product.price}`;
+      })
+      .join("\n");
+    res.set("Content-Type", "text/csv");
+    res.send(csv);
+  }
+  return res.status(406).send({
+    title: "Not Acceptable",
+    status: 406,
+    detail: "Not Acceptable",
   });
-  next(collection);
+
 });
 
-router.get("/listProducts.csv", async (req, res) => {
-  const productService = await createProductService();
-  const {
-    page = 1,
-    limit = 10,
-    name,
-    categories_slug: categoriesSlugStr,
-  } = req.query;
-  const categories_slug = categoriesSlugStr
-    ? categoriesSlugStr.toString().split(",")
-    : [];
-  const { products } = await productService.listProducts({
-    page: parseInt(page as string),
-    limit: parseInt(limit as string),
-    filter: {
-      name: name as string,
-      categories_slug,
-    },
-  });
-  const csv = products
-    .map((product) => {
-      return `${product.name},${product.slug},${product.description},${product.price}`;
-    })
-    .join("\n");
-  res.send(csv);
-});
+
 
 export default router;

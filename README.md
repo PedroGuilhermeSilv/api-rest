@@ -138,5 +138,48 @@ Esse é um dos princípios mais importantes do REST e tem quatro restrições pr
 | `TRACE`     | Depurar requisição                  | Sim            | Não     |
 | `CONNECT`   | Estabelecer túnel                   | Não            | Não     |
 
+
+
 ## Listagem dos status http
 https://www.httpstatus.com.br/ 
+
+
+## Content-Type
+O Content-Type é um cabeçalho HTTP que:
+- Define o tipo de mídia do recurso enviado na requisição/resposta
+- Indica ao cliente como interpretar o corpo da mensagem
+- Também conhecido como tipo MIME (Multipurpose Internet Mail Extensions)
+
+### Tipos Comuns:
+| Content-Type | Descrição |
+|--------------|-----------|
+| `application/json` | Dados no formato JSON |
+| `text/html` | Conteúdo HTML |
+| `text/plain` | Texto simples |
+| `application/xml` | Dados XML |
+| `multipart/form-data` | Formulários com upload de arquivos |
+| `application/x-www-form-urlencoded` | Dados de formulário simples |
+
+## Accept
+O Accept é um cabeçalho HTTP que:
+- Especifica quais tipos de conteúdo o cliente aceita como resposta
+- Permite negociação de conteúdo entre cliente e servidor
+- Pode incluir múltiplos tipos com prioridades
+
+### Exemplos de Uso:
+```http
+GET /api/produtos
+Accept: application/json
+
+// Múltiplos tipos com prioridade (q-value)
+GET /api/produtos
+Accept: application/json;q=1.0, application/xml;q=0.8
+```
+
+### Tabela Comparativa:
+| Característica | Content-Type | Accept |
+|----------------|--------------|--------|
+| **Direção** | Define o formato do conteúdo sendo **enviado** | Define os formatos que podem ser **recebidos** |
+| **Uso** | Usado pelo remetente da mensagem | Usado pelo destinatário para indicar preferências |
+| **Momento** | Na requisição: indica formato do body enviado<br>Na resposta: indica formato do body retornado | Na requisição: indica formatos aceitos para resposta |
+| **Exemplo** | `Content-Type: application/json` | `Accept: application/json, text/plain` |
