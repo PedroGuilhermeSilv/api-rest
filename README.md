@@ -165,6 +165,7 @@ O Accept é um cabeçalho HTTP que:
 - Especifica quais tipos de conteúdo o cliente aceita como resposta
 - Permite negociação de conteúdo entre cliente e servidor
 - Pode incluir múltiplos tipos com prioridades
+- Podemos também versionar a api, passando a versão no como application/vnd.ecommerce.v2+json
 
 ### Exemplos de Uso:
 ```http
@@ -183,3 +184,87 @@ Accept: application/json;q=1.0, application/xml;q=0.8
 | **Uso** | Usado pelo remetente da mensagem | Usado pelo destinatário para indicar preferências |
 | **Momento** | Na requisição: indica formato do body enviado<br>Na resposta: indica formato do body retornado | Na requisição: indica formatos aceitos para resposta |
 | **Exemplo** | `Content-Type: application/json` | `Accept: application/json, text/plain` |
+
+
+## CORS (Cross-Origin Resource Sharing)
+
+CORS é um mecanismo de segurança que:
+- Controla quais origens podem acessar recursos da API
+- Previne requisições não autorizadas de outros domínios
+- Utiliza headers HTTP para definir permissões
+
+### Funcionamento do CORS:
+1. Navegador envia requisição OPTIONS (preflight)
+2. Servidor responde com políticas CORS
+3. Se permitido, navegador envia requisição real
+
+### Headers CORS Principais:
+| Header | Descrição |
+|--------|-----------|
+| `Access-Control-Allow-Origin` | Origens permitidas |
+| `Access-Control-Allow-Methods` | Métodos HTTP permitidos |
+| `Access-Control-Allow-Headers` | Headers permitidos |
+| `Access-Control-Max-Age` | Tempo de cache do preflight |
+
+### Exemplo de Preflight OPTIONS:
+```http
+// Requisição OPTIONS (Preflight)
+OPTIONS /api/recursos
+Origin: https://app.exemplo.com
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: Content-Type
+
+// Resposta do Servidor
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: https://app.exemplo.com
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Headers: Content-Type
+Access-Control-Max-Age: 3600
+```
+
+### Configuração Express:
+```javascript
+// filepath: server.js
+app.use(cors({
+  origin: 'https://app.exemplo.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+```
+
+
+### O que é Hypermedia?
+
+Hypermedia significa usar links e metadados em respostas de API para fornecer informações sobre as ações que podem ser realizadas em relação aos recursos. Esses links ajudam os clientes a navegar pela API sem precisar de conhecimento prévio sobre a estrutura dela.
+
+omo funciona?
+
+Quando um cliente faz uma requisição para a API, a resposta inclui:
+
+    Dados do recurso atual: As informações solicitadas.
+    Links para outros recursos ou ações: URLs que representam as próximas ações possíveis.
+
+Exemplo de uma resposta em formato JSON com hipermídia:
+```json
+{
+  "id": 123,
+  "name": "João Silva",
+  "email": "joao.silva@example.com",
+  "_links": {
+    "self": {
+      "href": "/users/123"
+    },
+    "edit": {
+      "href": "/users/123/edit"
+    },
+    "delete": {
+      "href": "/users/123/delete"
+    }
+  }
+}
+```
+### Benefícios do uso de Hypermedia:
+
+    Descoberta dinâmica: O cliente não precisa conhecer a estrutura da API antecipadamente.
+    Facilidade de manutenção: Mudanças na API podem ser feitas sem quebrar clientes existentes, pois as interações são baseadas em links fornecidos nas respostas.
+    Orientação clara: O cliente sabe exatamente quais ações estão disponíveis em cada estado do recurso.

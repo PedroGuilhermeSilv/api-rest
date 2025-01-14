@@ -1,12 +1,22 @@
+import cors from "cors";
 import { Router } from "express";
-import { Resource, ResourceCollection } from "../../http/resource";
+import { defaultCorsOptions } from "../../http/cors";
+import { ProductResource, ProductResourceCollection } from "../../http/product-resource";
 import { createProductService } from "../../services/product.service";
-
 const router = Router();
 
+const corsCollection = cors({
+  ...defaultCorsOptions,
+  methods: ["GET", "POST"],
+})
+
+const corsItem = cors({
+  ...defaultCorsOptions,
+  methods: ["GET", "PATCH", "DELETE"],
+})
 
 
-router.post("/", async (req, res, next) => {
+router.post("/", corsCollection, async (req, res, next) => {
   const productService = await createProductService();
   const { name, slug, description, price, categoryIds } = req.body;
   try {
@@ -18,14 +28,14 @@ router.post("/", async (req, res, next) => {
       categoryIds
     );
     res.set("Location", `/admin/products/${product.id}`).status(201);
-    const resource = new Resource(product);
+    const resource = new ProductResource(product, req);
     next(resource);
   } catch (e) {
     next(e);
   }
 });
 
-router.get("/:productId", async (req, res) => {
+router.get("/:productId", corsItem, async (req, res, next) => {
   const productService = await createProductService();
   const product = await productService.getProductById(+req.params.productId);
   if (!product) {
@@ -35,11 +45,11 @@ router.get("/:productId", async (req, res) => {
       detail: `Product with id ${req.params.productId} not found`,
     });
   }
-  const resource = new Resource(product);
-  res.json(resource);
+  const resource = new ProductResource(product, req);
+  next(resource);
 });
 
-router.patch("/:productId", async (req, res) => {
+router.patch("/:productId", corsCollection, async (req, res, next) => {
   const productService = await createProductService();
   const { name, slug, description, price, categoryIds } = req.body;
   const product = await productService.updateProduct({
@@ -50,17 +60,24 @@ router.patch("/:productId", async (req, res) => {
     price,
     categoryIds,
   });
-  const resource = new Resource(product);
-  res.json(resource);
+  if (!product) {
+    return res.status(404).json({
+      title: "Not Found",
+      status: 404,
+      detail: `Product with id ${req.params.productId} not found`,
+    });
+  }
+  const resource = new ProductResource(product, req);
+  next(resource);
 });
 
-router.delete("/:productId", async (req, res) => {
+router.delete("/:productId", corsItem, async (req, res, next) => {
   const productService = await createProductService();
   await productService.deleteProduct(+req.params.productId);
-  res.status(204).send();
+  next();
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/", corsCollection, async (req, res, next) => {
   const productService = await createProductService();
   const {
     page = 1,
@@ -79,15 +96,16 @@ router.get("/", async (req, res, next) => {
       categories_slug,
     },
   });
-  if (!req.headers["accept"] || req.headers["accept"] === "application/json") {
-    const collection = new ResourceCollection(products, {
+  if (!req.headers["accept"] || req.headers['accept'] === "*/*" || req.headers["accept"] === "application/json") {
+    const collection = new ProductResourceCollection(products, req, {
       paginationData: {
         total,
         page: parseInt(page as string),
         limit: parseInt(limit as string),
       },
     });
-    next(collection);
+    return next(collection);
+
   }
   if (req.headers["accept"] === "text/csv") {
     const csv = products
@@ -98,13 +116,11 @@ router.get("/", async (req, res, next) => {
     res.set("Content-Type", "text/csv");
     res.send(csv);
   }
-  return res.status(406).send({
-    title: "Not Acceptable",
-    status: 406,
-    detail: "Not Acceptable",
-  });
 
 });
+
+router.options("/", corsCollection);
+router.options("/:productId", corsItem);
 
 
 

@@ -175,6 +175,9 @@ DELETE  http://localhost:3000/admin/products/{{ product_id }}
 Content-Type: application/json
 Authorization: Bearer {{ token }}
 
+### OPTIONS /products
+
+OPTIONS http://localhost:3000/admin/products
 
 ### List products with pagination and optional filtering&name=Product&categories_slug=category-slug&user_id=1
 GET http://localhost:3000/products?page=1&limit=10
@@ -234,6 +237,10 @@ Content-Type: application/json
 {
   "cartItemId": 1
 }
+
+### OPTIONS /products
+
+OPTIONS http://localhost:3000/products
 
 ### Clear the cart
 POST http://localhost:3000/carts/{{cart_uuid}}/clear
